@@ -21,3 +21,22 @@ A second segmented control for meters, kilometers, feet, yard, or miles, for the
 A text field where users enter a number.
 A text view showing the result of the conversion.
 So, if you chose meters for source unit and feet for output unit, then entered 10, you’d see 32.81 as the output.
+** Day 24 - Challenge #1
+#+BEGIN_QUOTE
+Create a custom ViewModifier (and accompanying View extension) that makes a view have a large, blue font suitable for prominent titles in a view.
+#+END_QUOTE
+
+#+BEGIN_SRC Swift
+struct Title: ViewModifier {
+    func body(content: Content) -> some View {
+        content
+            .font(.largeTitle)
+            .foregroundColor(.blue)    }
+}
+
+extension View {
+    func titleStyle() -> some View {
+        return self.modifier(Title())
+    }
+}
+#+END_SRC

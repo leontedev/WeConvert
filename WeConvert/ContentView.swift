@@ -8,6 +8,20 @@
 
 import SwiftUI
 
+struct Title: ViewModifier {
+    func body(content: Content) -> some View {
+        content
+            .font(.largeTitle)
+            .foregroundColor(.blue)    }
+}
+
+extension View {
+    func titleStyle() -> some View {
+        return self.modifier(Title())
+    }
+}
+
+
 struct ContentView: View {
     @State private var input = ""
     
@@ -56,37 +70,41 @@ struct ContentView: View {
     
     var body: some View {
         NavigationView {
-            Form {
+            VStack {
+                Text("WeConvert").titleStyle()
                 
-                Section(header: Text("Conversion type")) {
-                    Picker("Conversion type", selection: $conversionType) {
-                        ForEach(0 ..< conversionTypes.count) {
-                            Text("\(self.conversionTypes[$0])")
-                        }
-                    }.pickerStyle(SegmentedPickerStyle())
-                }
-            
-                Section {
-                    TextField("Input", text: $input)
-                
-                    Picker("Convert From", selection: $convertFrom) {
-                        ForEach(0 ..< conversions[conversionType].count, id: \.self) {
-                            Text("\(self.conversions[self.conversionType][$0])")
-                        }
-                    }.pickerStyle(SegmentedPickerStyle())
-                }
-                
-                Section(header: Text("Conversion Result")) {
-                    Picker("Convert To", selection: $convertTo) {
-                        ForEach(0 ..< conversions[conversionType].count, id: \.self) {
-                            Text("\(self.conversions[self.conversionType][$0])")
-                        }
-                    }.pickerStyle(SegmentedPickerStyle())
+                Form {
                     
-                    Text("\(output, specifier:"%.1f")\(measureUnits[conversionType][convertTo])")
-                }
+                    Section(header: Text("Conversion type")) {
+                        Picker("Conversion type", selection: $conversionType) {
+                            ForEach(0 ..< conversionTypes.count) {
+                                Text("\(self.conversionTypes[$0])")
+                            }
+                        }.pickerStyle(SegmentedPickerStyle())
+                    }
                 
-            }.navigationBarTitle(Text("WeConvert"))
+                    Section {
+                        TextField("Input", text: $input)
+                    
+                        Picker("Convert From", selection: $convertFrom) {
+                            ForEach(0 ..< conversions[conversionType].count, id: \.self) {
+                                Text("\(self.conversions[self.conversionType][$0])")
+                            }
+                        }.pickerStyle(SegmentedPickerStyle())
+                    }
+                    
+                    Section(header: Text("Conversion Result")) {
+                        Picker("Convert To", selection: $convertTo) {
+                            ForEach(0 ..< conversions[conversionType].count, id: \.self) {
+                                Text("\(self.conversions[self.conversionType][$0])")
+                            }
+                        }.pickerStyle(SegmentedPickerStyle())
+                        
+                        Text("\(output, specifier:"%.1f")\(measureUnits[conversionType][convertTo])")
+                    }
+                    
+                }
+            }
         }
     }
 }
